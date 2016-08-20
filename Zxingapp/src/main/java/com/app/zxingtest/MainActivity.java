@@ -28,7 +28,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+<<<<<<< HEAD
+
+=======
         
+>>>>>>> origin/master
         initView();
     }
 
@@ -57,7 +61,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }else {
                     Bitmap bitmap = CodeUtils.createImage(input,400,400,
                             mLogo.isChecked()?
+<<<<<<< HEAD
+                                    BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher):null);
+=======
                             BitmapFactory.decodeResource(getResources(),R.drawable.logo):null);
+>>>>>>> origin/master
                     mResult.setImageBitmap(bitmap);
                 }
         }
@@ -74,4 +82,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
             Log.d("abc",resule+"dsfdsf");
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
