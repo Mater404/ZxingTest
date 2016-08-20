@@ -25,4 +25,25 @@
         android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/et_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/Button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="生成二维码"/>
+    <CheckBox
+        android:id="@+id/cb_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logo"/>
+    <ImageView
+        android:id="@+id/LogImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/ic_launcher"/>
+
 </LinearLayout>
