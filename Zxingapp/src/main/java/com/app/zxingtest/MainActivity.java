@@ -28,11 +28,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> origin/master
         initView();
     }
 
@@ -52,7 +47,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch (view.getId()) {
             case R.id.Button1:
                 Log.d("abc", "Button1");
-                startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class),0);
+                startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class),111);
                 break;
             case R.id.Button2:
                 String input = mInput.getText().toString();
@@ -61,11 +56,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }else {
                     Bitmap bitmap = CodeUtils.createImage(input,400,400,
                             mLogo.isChecked()?
-<<<<<<< HEAD
-                                    BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher):null);
-=======
-                            BitmapFactory.decodeResource(getResources(),R.drawable.logo):null);
->>>>>>> origin/master
+                                    BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher):null);    //单目表达式 判断复选框是否被选中
                     mResult.setImageBitmap(bitmap);
                 }
         }
@@ -74,16 +65,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            Bundle bundle = data.getExtras();
-            String resule = bundle.getString(CodeUtils.RESULT_STRING);
-            mTvResult.setText(resule);
-            Toast.makeText(MainActivity.this,resule+"----",Toast.LENGTH_LONG).show();
-            Log.d("abc",resule+"dsfdsf");
+        if(resultCode == RESULT_OK) {
+            if (requestCode == 111) {
+                Bundle bundle = data.getExtras();
+                String resule = bundle.getString(CodeUtils.RESULT_STRING);
+                mTvResult.setText(resule);
+                Toast.makeText(MainActivity.this, resule, Toast.LENGTH_LONG).show();
+                Log.d("abc", resule);
+            }
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/master
+
