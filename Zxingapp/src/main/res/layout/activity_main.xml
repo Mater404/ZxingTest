@@ -30,6 +30,7 @@
         android:id="@+id/Button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:text="选择图片"/>
     <EditText
         android:id="@+id/et_text"
@@ -39,6 +40,7 @@
         android:id="@+id/Button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:text="生成二维码"/>
     <CheckBox
         android:id="@+id/cb_logo"
