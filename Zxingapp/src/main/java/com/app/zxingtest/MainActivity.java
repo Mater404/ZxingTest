@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,12 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uuzuche.lib_zxing.ImageUtil;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 public class MainActivity extends Activity implements View.OnClickListener{
     private Button button1 = null;
     private Button button2 = null;
+    private Button button3 = null;
     private TextView mTvResult;
     private EditText mInput;
     private ImageView mResult;
@@ -34,12 +37,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private void initView() {
         button1 = (Button) findViewById(R.id.Button1);
         button2 = (Button) findViewById(R.id.Button2);
+        button3 = (Button) findViewById(R.id.Button3);
         mTvResult = (TextView) findViewById(R.id.tv_result);
         mInput = (EditText) findViewById(R.id.et_text);
         mResult = (ImageView) findViewById(R.id.LogImage);
         mLogo = (CheckBox) findViewById(R.id.cb_logo);
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
+        button3.setOnClickListener(this);
+
     }
 
     @Override
@@ -59,6 +65,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                     BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher):null);    //单目表达式 判断复选框是否被选中
                     mResult.setImageBitmap(bitmap);
                 }
+                break;
+            case R.id.Button3:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("image/*");
+                startActivityForResult(intent, 112);
+                break;
+
         }
     }
 
@@ -72,8 +86,24 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 mTvResult.setText(resule);
                 Toast.makeText(MainActivity.this, resule, Toast.LENGTH_LONG).show();
                 Log.d("abc", resule);
+            } else if (requestCode == 112){
+                Uri uri = data.getData();
+                try {
+                    CodeUtils.analyzeBitmap(ImageUtil.getImageAbsolutePath(this, uri), new CodeUtils.AnalyzeCallback()  {   //获取绝对路径
+                        @Override
+                        public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                            Toast.makeText(MainActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onAnalyzeFailed() {
+                            Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 }
-
