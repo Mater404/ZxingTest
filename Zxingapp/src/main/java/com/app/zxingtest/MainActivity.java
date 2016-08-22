@@ -92,6 +92,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     CodeUtils.analyzeBitmap(ImageUtil.getImageAbsolutePath(this, uri), new CodeUtils.AnalyzeCallback()  {   //获取绝对路径
                         @Override
                         public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                            mTvResult.setText(result);
                             Toast.makeText(MainActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
                         }
 
