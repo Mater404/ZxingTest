@@ -57,5 +57,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@mipmap/ic_launcher"/>
+    <Button
+        android:id="@+id/Button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="保存至手机"/>
 
 </LinearLayout>

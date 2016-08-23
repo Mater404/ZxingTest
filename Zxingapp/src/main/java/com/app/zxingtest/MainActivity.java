@@ -19,10 +19,18 @@ import com.uuzuche.lib_zxing.ImageUtil;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+
 public class MainActivity extends Activity implements View.OnClickListener{
     private Button button1 = null;
     private Button button2 = null;
     private Button button3 = null;
+    private Button button4 = null;
+    private Bitmap bitmap = null;
     private TextView mTvResult;
     private EditText mInput;
     private ImageView mResult;
@@ -38,6 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button1 = (Button) findViewById(R.id.Button1);
         button2 = (Button) findViewById(R.id.Button2);
         button3 = (Button) findViewById(R.id.Button3);
+        button4 = (Button) findViewById(R.id.Button4);
         mTvResult = (TextView) findViewById(R.id.tv_result);
         mInput = (EditText) findViewById(R.id.et_text);
         mResult = (ImageView) findViewById(R.id.LogImage);
@@ -45,11 +54,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
+        button4.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.Button1:
                 Log.d("abc", "Button1");
@@ -60,7 +71,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 if(input.equals("")){
                     Toast.makeText(MainActivity.this,"输入不能为空",Toast.LENGTH_LONG).show();
                 }else {
-                    Bitmap bitmap = CodeUtils.createImage(input,400,400,
+                    bitmap = CodeUtils.createImage(input,400,400,
                             mLogo.isChecked()?
                                     BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher):null);    //单目表达式 判断复选框是否被选中
                     mResult.setImageBitmap(bitmap);
@@ -72,7 +83,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 intent.setType("image/*");
                 startActivityForResult(intent, 112);
                 break;
-
+            case R.id.Button4:
+                try {
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
+                    String date=sdf.format(new java.util.Date());
+                    saveBitmap(bitmap,date);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 
@@ -105,6 +124,38 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    /**
+     * 保存图片
+     * @param mbitmap   图片
+     * @param mbitName  名字
+     * @throws IOException
+     */
+    public void saveBitmap(Bitmap mbitmap,String mbitName) throws IOException
+    {
+        File file = new File("/sdcard/DCIM/Camera/"+mbitName+".PNG");
+        if(file.exists()){
+            file.delete();
+        }
+        FileOutputStream out;
+        try{
+            out = new FileOutputStream(file);
+            if(mbitmap.compress(Bitmap.CompressFormat.PNG, 90, out))
+            {
+                out.flush();
+                out.close();
+                Toast.makeText(MainActivity.this,"保存成功：/sdcard/DCIM/Camera/"+mbitName+".PNG",Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }
