@@ -2,10 +2,12 @@ package com.app.zxingtest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,11 +32,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private Button button2 = null;
     private Button button3 = null;
     private Button button4 = null;
+    private Button button5 = null;
     private Bitmap bitmap = null;
     private TextView mTvResult;
     private EditText mInput;
     private ImageView mResult;
     private CheckBox mLogo;
+    private Intent intent;
+    private Bitmap bitmap2 = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button2 = (Button) findViewById(R.id.Button2);
         button3 = (Button) findViewById(R.id.Button3);
         button4 = (Button) findViewById(R.id.Button4);
+        button5 = (Button) findViewById(R.id.Button5);
         mTvResult = (TextView) findViewById(R.id.tv_result);
         mInput = (EditText) findViewById(R.id.et_text);
         mResult = (ImageView) findViewById(R.id.LogImage);
@@ -55,7 +61,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
         button4.setOnClickListener(this);
-
+        button5.setOnClickListener(this);
     }
 
     @Override
@@ -73,12 +79,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }else {
                     bitmap = CodeUtils.createImage(input,400,400,
                             mLogo.isChecked()?
-                                    BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher):null);    //单目表达式 判断复选框是否被选中
+                                   // BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher):null);    //单目表达式 判断复选框是否被选中
+                    bitmap2:null);
                     mResult.setImageBitmap(bitmap);
                 }
                 break;
             case R.id.Button3:
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("image/*");
                 startActivityForResult(intent, 112);
@@ -91,6 +98,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.Button5:
+                intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
                 break;
         }
     }
@@ -122,6 +135,28 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+            else if(requestCode == 1){
+                try
+                {
+                    // 获得图片的uri
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    bitmap2 = BitmapFactory.decodeFile(picturePath);
+                    mResult.setImageBitmap(bitmap2);
+                }catch(Exception e)
+                {
+                    System.out.println(e.getMessage());
                 }
             }
         }
