@@ -32,7 +32,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private Button button2 = null;
     private Button button3 = null;
     private Button button4 = null;
-    private Button button5 = null;
     private Bitmap bitmap = null;
     private TextView mTvResult;
     private EditText mInput;
@@ -52,7 +51,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button2 = (Button) findViewById(R.id.Button2);
         button3 = (Button) findViewById(R.id.Button3);
         button4 = (Button) findViewById(R.id.Button4);
-        button5 = (Button) findViewById(R.id.Button5);
         mTvResult = (TextView) findViewById(R.id.tv_result);
         mInput = (EditText) findViewById(R.id.et_text);
         mResult = (ImageView) findViewById(R.id.LogImage);
@@ -61,7 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
         button4.setOnClickListener(this);
-        button5.setOnClickListener(this);
+        mLogo.setOnClickListener(this);
     }
 
     @Override
@@ -99,11 +97,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     e.printStackTrace();
                 }
                 break;
-            case R.id.Button5:
-                intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
+            case R.id.cb_logo:
+                if(mLogo.isChecked()){
+                    intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, 113);
+                }
                 break;
         }
     }
@@ -137,7 +137,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     e.printStackTrace();
                 }
             }
-            else if(requestCode == 1){
+            else if(requestCode == 113){
                 try
                 {
                     // 获得图片的uri

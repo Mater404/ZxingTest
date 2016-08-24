@@ -42,12 +42,6 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:text="生成二维码"/>
-    <Button
-        android:id="@+id/Button5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="选择Logo图片"/>
     <CheckBox
         android:id="@+id/cb_logo"
         android:layout_width="wrap_content"
